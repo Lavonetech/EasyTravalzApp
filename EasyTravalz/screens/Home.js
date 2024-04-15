@@ -1,9 +1,26 @@
-import React from 'react'
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-function Home () {
+const HomeScreen = ({ navigation }) => {
+  const goToLogin = () => {
+    navigation.navigate('Login');
+  };
+
   return (
-    <div>This is Home Page</div>
-  )
-}
+    <View style={styles.container}>
+      <Text>Welcome to My App!</Text>
+      <Button title="Go to Login" onPress={goToLogin} />
+    </View>
+  );
+};
 
-export default Home
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default HomeScreen;
