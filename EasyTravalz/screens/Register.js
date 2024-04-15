@@ -1,12 +1,14 @@
+// Register.js
 
-import React from 'react'
+import React from 'react';
+import { View, Text } from 'react-native';
 
-function Register () {
+const Register = () => {
   return (
-    <div>This is Register Page</div>
-    
-  )
-}
-<h1>Testing App</h1>
-export default Register
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Register Screen</Text>
+    </View>
+  );
+};
 
+export default Register;
