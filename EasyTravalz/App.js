@@ -30,6 +30,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/Home';
 import Login from './screens/Login';
 import Start from './screens/Start';
+import EditPersonalInfo from './screens/EditPersonalInfo';
+import Edit from './screens/Edit'; //gg
+import PaymentMethod from './screens/PaymentMethod';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +58,10 @@ const App = () => {
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="EditPersonalInfo" component={EditPersonalInfo} />
+            <Stack.Screen name="Edit" component={Edit} /> 
+            {/* //gg */}
+            <Stack.Screen name="PaymentMethod" component={PaymentMethod} /> 
           </>
         )}
       </Stack.Navigator>
