@@ -1,27 +1,3 @@
-// import React from 'react';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import HomeScreen from './screens/Home';
-// import Login from './screens/Login';
-// import Start from './screens/Start';
-
-// const Stack = createStackNavigator();
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="Home">
-//         <Stack.Screen name="Home" component={HomeScreen} />
-//         <Stack.Screen name="Login" component={Login} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
-// export default App;
-
-
-
 
 
 import React, { useState, useEffect } from 'react';
@@ -48,13 +24,13 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start" headerMode="none">
+      <Stack.Navigator initialRouteName="Start">
         {isLoading ? (
-          <Stack.Screen name="Start" component={Start} />
+          <Stack.Screen name="Start"  options={{ headerShown: false }}  component={Start} />
         ) : (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Home" options={{ headerShown: false }}  component={HomeScreen} />
+            <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
           </>
         )}
       </Stack.Navigator>
