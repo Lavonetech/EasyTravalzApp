@@ -32,7 +32,7 @@ import Login from './screens/Login';
 import Start from './screens/Start';
 import EditPersonalInfo from './screens/EditPersonalInfo';
 import Edit from './screens/Edit'; //gg
-import PaymentMethod from './screens/PaymentMethod';
+import CurrencyScreen from './screens/CurrencyScreen';
 
 const Stack = createStackNavigator();
 
@@ -61,7 +61,7 @@ const App = () => {
             <Stack.Screen name="EditPersonalInfo" component={EditPersonalInfo} />
             <Stack.Screen name="Edit" component={Edit} /> 
             {/* //gg */}
-            <Stack.Screen name="PaymentMethod" component={PaymentMethod} /> 
+            <Stack.Screen name="CurrencyScreen" component={CurrencyScreen} /> 
           </>
         )}
       </Stack.Navigator>
