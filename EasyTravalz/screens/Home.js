@@ -1,14 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity } from "react-native";
 import { Icon, Image } from "react-native-elements";
-import { TextInput } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import StarRating from "react-native-star-rating";
+
+
 
 const HomeScreen = ({ navigation }) => {
   const goToLogin = () => {
     navigation.navigate("Login");
   };
-
+  const handleAgencyPress = (agencyName) => {
+    navigation.navigate("AgencyDetails", { agencyName });
+  };
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -45,24 +49,47 @@ const HomeScreen = ({ navigation }) => {
             }}
           />
         </View>
+        <TouchableOpacity style={styles.agency} onPress={() => handleAgencyPress("360 Tours Lanka")}>
+          <View>
+            <Image source={require("../assets/home/images/agency/a-1.png")} style={styles.agencyImg} />
+            <View style={styles.overlay}></View>
+            <View style={styles.agencyContent}>
+              <Text style={styles.agencyTitle}>360 Tours Lanka</Text>
+              <Text style={styles.locationTitle}>Colombo, Sri Lanka</Text>
+              <View style={styles.stars}>
+                <StarRating
+                  disabled={true}
+                  maxStars={5}
+                  rating={4.5}
+                  starSize={20}
+                  fullStarColor="#FFD700"
+                  emptyStarColor="#CCCCCC"
+                  starMarginHorizontal={10}
+                  starStyle={{ marginRight: 5, marginTop: 5 }}
+                />
+                <Text style={styles.starText}>(1.8K)</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
         <View style={styles.agency}>
             <View>
-              <Image source={require("../assets/home/images/agency/a-1.png")} style={styles.agencyImg}/>
+              <Image source={require("../assets/home/images/agency/a-2.png")} style={styles.agencyImg}/>
               <View style={styles.overlay}></View>
               <View style={styles.agencyContent}>
-                <Text style={styles.agencyTitle}>360 Tours Lanka</Text>
-                <Text style={styles.locationTitle}>Colombo, Sri Lanka</Text>
+                <Text style={styles.agencyTitle}>A & A Travels (Pvt) Ltd</Text>
+                <Text style={styles.locationTitle}>Bentota, Sri Lanka</Text>
                 <View style={styles.stars}>
                 <StarRating
                    disabled={true}
                    maxStars={5}
-                   rating={4.5}
+                   rating={5}
                    starSize={20}
                  
                    fullStarColor="#FFD700"
                    emptyStarColor="#CCCCCC"
                    starMarginHorizontal={10} 
-                   starStyle={{marginRight:5}}
+                   starStyle={{marginRight:5,marginTop:5}}
                    />
                    <Text style={styles.starText}>
                     (1.8K)
@@ -72,7 +99,9 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
         </View>
+      
       </SafeAreaView>
+    
     </View>
   );
 };
@@ -145,7 +174,7 @@ const styles = StyleSheet.create({
   agency:{
     position:'relative',
     top:10,
-   
+    marginBottom:15
     
   },
   agencyImg:{
@@ -177,7 +206,6 @@ const styles = StyleSheet.create({
 
   locationTitle:{
   color:'#fff',
-  
   
   },
 

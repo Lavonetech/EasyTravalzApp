@@ -1,11 +1,11 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './screens/Home';
+import  HomeScreen from './screens/Home';
 import Login from './screens/Login';
 import Start from './screens/Start';
+import AgencyDetails from './screens/AgencyDetails';
+
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const App = () => {
     // Simulate loading delay
     const delay = setTimeout(() => {
       setIsLoading(false); // Set isLoading to false after delay
-    }, 3000); // 3 seconds delay for demonstration
+    }, 1000); // 3 seconds delay for demonstration
 
     // Clean up the timeout to avoid memory leaks
     return () => clearTimeout(delay);
@@ -24,16 +24,16 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start">
+      <Stack.Navigator>
         {isLoading ? (
-          <Stack.Screen name="Start"  options={{ headerShown: false }}  component={Start} />
+          <Stack.Screen name="Loading" component={Start} options={{ headerShown: false }} />
         ) : (
-          <>
-            <Stack.Screen name="Home" options={{ headerShown: false }}  component={HomeScreen} />
-            <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-          </>
+          <Stack.Screen name="Home" component={ HomeScreen} options={{ headerShown: false }} />
         )}
+        <Stack.Screen name="AgencyDetails" component={ AgencyDetails} options={{ headerShown: false }} />
       </Stack.Navigator>
+
+   
     </NavigationContainer>
   );
 };
