@@ -58,6 +58,7 @@ const Register = ({navigation}) => {
         setPassword("");
   
         setTimeout(() => {
+          setSuccessMessage("")
           navigation.navigate('Login');
         }, 3000);
       } else {
@@ -89,6 +90,13 @@ const Register = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+      {
+  successMessage && <Text style={styles.success}>{successMessage}</Text>
+}
+
+{
+  errorMessage && <Text style={styles.error}>{errorMessage}</Text>
+}
         <SafeAreaView style={styles.headerContainer}>
           <Text style={styles.header}>Sign up!</Text>
         </SafeAreaView>
@@ -153,9 +161,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  headerContainer: {
-    alignSelf: 'stretch',
-  },
+  
   header: {
     fontSize: 50,
     marginBottom: 20,
@@ -227,6 +233,16 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
   },
+  success:{
+    marginTop:20,
+    alignItems:'center',
+    color:'#2194FF'
+  },
+  error:{
+    marginTop:20,
+    alignItems:'center',
+    color:'#dc3545'
+  }
 });
 
 export default Register;
