@@ -383,6 +383,7 @@ const EditPersonalInfo = () => {
 
   const handleListYourAgencyPress = () => {
     console.log("List your Agency Pressed");
+    navigation.navigate("EditYourAgency");
   };
 
   const handleFAQPress = () => {
