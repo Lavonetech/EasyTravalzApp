@@ -15,9 +15,9 @@ const SignUpScreen = () => {
   
 
   const handleSignUp = () => {
-    // Implement your sign-up logic here
+    
     console.log('Signing up with:', name, email, password, confirmPassword);
-    // You can make API calls or perform other actions to sign the user up
+    
   };
 
   return (
