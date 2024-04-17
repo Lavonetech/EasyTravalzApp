@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from "react-native"; // Add import statement for TouchableOpacity
 import { Feather } from "@expo/vector-icons";
 import { CheckBox } from "react-native-elements"; // Import CheckBox from react-native-elements
@@ -18,22 +19,22 @@ import {
   JosefinSans_400Regular,
   JosefinSans_700Bold,
 } from "@expo-google-fonts/josefin-sans";
+import {jwtDecode} from 'jwt-decode'
+import axios from "axios";
 
-const Login = () => {
-  const [username, setUsername] = useState("");
+  const Login = ({navigation}) => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [successMessage,setSuccessMessage]=useState("");
+  const [errorMessage,setErrorMessage]=useState("");
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [rememberMe, setRememberMe] = useState(false); // Add state for Remember Me checkbox
+  const Decode=jwtDecode;
 
-  const handleLogin = () => {
-    console.log(
-      `Attempting to log in with username: ${username} and password: ${password}`
-    );
-    setUsername("");
-    setPassword("");
-  };
-
+  
   const handleForgotPassword = () => {
     console.log("Forgot Password clicked");
   };
@@ -43,15 +44,20 @@ const Login = () => {
   };
 
   const handleRegisterNow = () => {
-    console.log("Register now clicked");
+   navigation.navigate('Register')
   };
 
-  const validateEmail = (input) => {
+  //Validating email and handling password
+  const emailHandler = (text) => {
     // Regular expression to validate email format
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
-    setIsValidEmail(isValid);
-    setUsername(input);
+    // const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+    // setIsValidEmail(isValid);
+    setEmail(text);
   };
+
+const handlePassword=(text)=>{
+  setPassword(text)
+}
 
   let [fontsLoaded] = useFonts({
     RobotoRegular: Roboto_400Regular,
@@ -64,8 +70,54 @@ const Login = () => {
     return null; // Loading indicator while fonts are loading
   }
 
+
+  const handleLogin=async()=>{
+
+    try{
+    const user=({
+        email,
+        password
+    });
+    const response = await axios.post("http://192.168.56.1:5005/loginuser",user);
+    if(response.status===200){
+     
+      // const token=response.data.token;
+      // console.log("token",token);
+      // const decode=Decode(token);
+      // console.log(decode);
+      // document.cookie = `jwt=${token}; path=/; max-age=${60 * 60 * 24}`;
+      setSuccessMessage("Loading...");
+        setTimeout(()=>{
+          setSuccessMessage("")
+            navigation.navigate('BottomTabNavigator');
+        },3000)
+
+    }else{
+        console.log("user not found")
+        setErrorMessage("Invalid email or password.Try to remember again")
+        setTimeout(()=>{
+     setErrorMessage("")
+        },3000)
+    }
+    }catch(error){
+     console.log("internal server error"+ error);
+     setErrorMessage("Invalid email or password.Please try again");
+     setTimeout(()=>{
+        setErrorMessage("")
+           },3000)
+    }
+}
   return (
     <View style={styles.container}>
+      <ScrollView>
+     
+{
+  successMessage && <Text style={styles.success}>{successMessage}</Text>
+}
+
+{
+  errorMessage && <Text style={styles.error}>{errorMessage}</Text>
+}
       <Text style={styles.welcomeText}>Welcome </Text>
       <Text style={styles.welcomeText}>back!</Text>
       <Text style={styles.title}>Sign In</Text>
@@ -79,8 +131,8 @@ const Login = () => {
         <TextInput
           style={styles.input}
           placeholder="Username or Email"
-          value={username}
-          onChangeText={validateEmail}
+          value={email}
+          onChangeText={emailHandler}
           autoCapitalize="none"
         />
         {isValidEmail && (
@@ -98,7 +150,7 @@ const Login = () => {
           style={styles.passwordInput}
           placeholder="Password"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={handlePassword}
           secureTextEntry={!isPasswordVisible}
         />
         <TouchableOpacity
@@ -170,6 +222,7 @@ const Login = () => {
           />
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 };
@@ -179,7 +232,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
-    paddingTop: 50,
+    
   },
   welcomeText: {
     fontSize: 60,
@@ -322,6 +375,16 @@ const styles = StyleSheet.create({
     height: 80,
     marginHorizontal: 2,
   },
+  success:{
+    marginTop:20,
+    alignItems:'center',
+    color:'#2194FF'
+  },
+  error:{
+    marginTop:20,
+    alignItems:'center',
+    color:'#dc3545'
+  }
 });
 
 export default Login;

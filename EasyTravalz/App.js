@@ -8,9 +8,10 @@ import { Ionicons } from '@expo/vector-icons';
 import AgencyDetails from './screens/AgencyDetails';
 import Inbox from './screens/Inbox';
 import Login from './screens/Login';
-import User from './screens/user';
+import User from './screens/User';
 import { Image } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
+import Register from './screens/Register';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,7 +26,6 @@ const BottomTabNavigator = () => {
       justifyContent: 'center', 
      },
 
-     
     }}
     >
       <Tab.Screen
@@ -50,6 +50,7 @@ const BottomTabNavigator = () => {
         name="Inbox"
         component={Inbox}
       />
+
       <Tab.Screen
         options={{
           headerShown: false,
@@ -61,20 +62,8 @@ const BottomTabNavigator = () => {
         name="Login"
         component={Login}
       />
-      <Tab.Screen
-        options={{
-          headerShown: false,
-          tabBarLabel: '', // Hide the name on the bottom navigator
-          tabBarIcon: ({  size }) => (
-            <Image
-              source={require('./assets/home/images/agency/a-1.png')} // Replace 'path/to/user/image.png' with the actual path to your user image
-              style={[styles.tabIcon]}
-            />
-          ),
-        }}
-        name="User"
-        component={User}
-      />
+
+     
     </Tab.Navigator>
   );
 };
@@ -96,15 +85,47 @@ const App = () => {
       <Stack.Navigator>
         {isLoading ? (
           <Stack.Screen name="Loading" component={Start} options={{ headerShown: false }} />
+
         ) : (
           <>
-        
+          <Stack.Screen name="Loading" component={Register} options={{ headerShown: false }} />
           <Stack.Screen
             name="BottomTabNavigator"
             component={BottomTabNavigator}
             options={{ headerShown: false }}
           />
-
+      <Stack.Screen name="Login" component={Login} 
+      
+      options={({ navigation }) => ({
+        headerShown: true,
+        headerTitle: '',
+        headerLeft: () => (
+          <Ionicons
+            name="ios-arrow-back"
+            size={24}
+            color="black"
+            onPress={() => navigation.goBack()}
+            style={{ marginLeft: 10 }}
+          />
+        ),
+      })}
+      />
+      <Stack.Screen name="Register" component={Register} 
+      
+      options={({ navigation }) => ({
+        headerShown: true,
+        headerTitle: '',
+        headerLeft: () => (
+          <Ionicons
+            name="ios-arrow-back"
+            size={24}
+            color="black"
+            onPress={() => navigation.goBack()}
+            style={{ marginLeft: 10 }}
+          />
+        ),
+      })}
+      />
        <Stack.Screen name="AgencyDetails" component={AgencyDetails} options={({ navigation }) => ({
   headerShown: true,
   headerTitle: '',
