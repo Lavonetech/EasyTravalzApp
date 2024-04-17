@@ -1,3 +1,4 @@
+
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity } from "react-native";
 import { Icon, Image } from "react-native-elements";
@@ -6,17 +7,19 @@ import StarRating from "react-native-star-rating";
 
 
 
+
 const HomeScreen = ({ navigation }) => {
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
+ // navigation for Agency Profile
   const handleAgencyPress = (agencyName) => {
     navigation.navigate("AgencyDetails", { agencyName });
   };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        
+        <ScrollView>
+        <View style={styles.main}>
+
         <View style={styles.header}>
           <View >
            <Text style={styles.profilename}>Hi, Dilruksha !</Text>
@@ -99,6 +102,36 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
         </View>
+
+        <View style={styles.agency}>
+            <View>
+              <Image source={require("../assets/home/images/agency/a-3.png")} style={styles.agencyImg}/>
+              <View style={styles.overlay}></View>
+              <View style={styles.agencyContent}>
+                <Text style={styles.agencyTitle}>SSD Travellers</Text>
+                <Text style={styles.locationTitle}>Kandy, Sri Lanka</Text>
+                <View style={styles.stars}>
+                <StarRating
+                   disabled={true}
+                   maxStars={5}
+                   rating={5}
+                   starSize={20}
+                 
+                   fullStarColor="#FFD700"
+                   emptyStarColor="#CCCCCC"
+                   starMarginHorizontal={10} 
+                   starStyle={{marginRight:5,marginTop:5}}
+                   />
+                   <Text style={styles.starText}>
+                    (1.8K)
+                   </Text>
+                </View>
+                
+              </View>
+            </View>
+        </View>
+        </View>
+        </ScrollView>
       
       </SafeAreaView>
     
@@ -110,13 +143,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    
+    width:'100%'
+  },
+  main: {
+    marginTop: 40,
+    marginLeft: 10,
+    marginRight: 10,
   },
   search: {
     display: "flex",
     flexDirection: "row",
-    width: "95%",
+    width: "100%",
     borderRadius: 15,
     paddingHorizontal: 15,
     marginBottom: 5,

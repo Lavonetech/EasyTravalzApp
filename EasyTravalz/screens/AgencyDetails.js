@@ -1,25 +1,24 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View, Image, Text } from "react-native";
-import { Button } from "react-native-elements";
-import { color } from "react-native-elements/dist/helpers";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import StarRating from "react-native-star-rating";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+
 
 function AgencyDetails({navigation}) {
 
     const handlePress=()=>{
-        navigation.navigate("Home")
+        navigation.navigate("HomeScreen")
     }
   return (
     <View style={styles.container}>
       <SafeAreaView>
+        <ScrollView>
         <View style={styles.main}>
-          <View>
+          {/* <View>
             <Image
-              source={require("../assets/AgencyDetails/arrow-left.png")}
+              source={require("../assets/agencyDetails/arrow-left.png")}
               style={styles.backBtn}
             />
-          </View>
+          </View> */}
           <View style={styles.agencyProfile}>
             <Image
               source={require("../assets/home/images/agency/a-1.png")}
@@ -32,18 +31,18 @@ function AgencyDetails({navigation}) {
           </View>
           <View style={styles.verified}>
             <Image
-              source={require("../assets/AgencyDetails/shield.png")}
+              source={require("../assets/agencyDetails/shield.png")}
               style={styles.sheild}
             />
             <Text style={styles.verifiedText}>Verified</Text>
             <Image
-              source={require("../assets/AgencyDetails/Star-1.png")}
+              source={require("../assets/agencyDetails/Star-1.png")}
               style={styles.star}
             />
             <Text style={styles.verifiedText}>167 reviews</Text>
             <View style={styles.groupImage}>
               <Image
-                source={require("../assets/AgencyDetails/image-group.png")}
+                source={require("../assets/agencyDetails/image-group.png")}
                 style={styles.agencyProfileImgGroup}
               />
             </View>
@@ -84,8 +83,11 @@ function AgencyDetails({navigation}) {
                 </View>
             </View>
           </View>
-          
+          <TouchableOpacity style={styles.fullWidthBtn}>
+          <Text style={styles.btnText}>Contact 360 Tours Lanka</Text>
+          </TouchableOpacity>
         </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    width: '100%',
   },
   main: {
     marginTop: 40,
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: 20,
-    marginTop: 15,
+    marginTop: -30,
   },
   agencyProfileImg: {
     width: 65,
@@ -200,8 +203,16 @@ const styles = StyleSheet.create({
        marginLeft:40
       },
       btnText:{
-        fontSize:21,
+        fontSize:18,
         color:'#fff'
+      },
+      fullWidthBtn:{
+        backgroundColor: '#2194FF',
+        borderRadius: 10,
+        alignItems: 'center',
+        paddingVertical: 15,
+        marginTop:10,
+        marginBottom:10
       }
 });
 export default AgencyDetails;

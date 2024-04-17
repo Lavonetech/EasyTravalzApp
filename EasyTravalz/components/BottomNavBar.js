@@ -1,39 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './screens/Home';
+import Start from './screens/Start';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import HomeScreen from '../screens/Home';
-import LoginScreen from '../screens/Login';
 
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const BottomNavBar = () => {
-  const navigation = useNavigation();
-
+const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="HomeScreen">
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-home" size={size} color={color} />
           ),
-          tabBarLabel: 'Home',
         }}
-      />
-      <Tab.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-log-in" size={size} color={color} />
-          ),
-          tabBarLabel: 'Login',
-        }}
+        name="HomeScreen"
+        component={HomeScreen}
       />
     </Tab.Navigator>
   );
 };
 
-export default BottomNavBar;
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const delay = setTimeout(() => {
+      setIsLoading(false); // Set isLoading to false after delay
+    }, 1000); // 3 seconds delay for demonstration
+
+    // Clean up the timeout to avoid memory leaks
+    return () => clearTimeout(delay);
+  }, []);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isLoading ? (
+          <Stack.Screen name="Loading" component={Start} options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen
+            name="BottomTabNavigator"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+          />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
