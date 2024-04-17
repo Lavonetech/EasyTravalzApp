@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from 'react-native-elements'
 
-function Inbox () {
+function User () {
   return (
-   <Text>Inbox</Text>
+   <Text>User</Text>
   )
 }
 
-export default Inbox
+export default User

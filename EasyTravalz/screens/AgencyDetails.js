@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 50,
+    resizeMode:'contain'
   },
   groupImage: {
     marginLeft: 60,
