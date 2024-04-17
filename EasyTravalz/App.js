@@ -1,10 +1,12 @@
-// import React from 'react';
+// import React, { useState, useEffect } from 'react';
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 // import HomeScreen from './screens/Home';
 // import Login from './screens/Login';
 // import Start from './screens/Start';
-
+// import EditPersonalInfo from './screens/EditPersonalInfo';
+// import Edit from './screens/Edit'; //gg
+// import CurrencyScreen from './screens/CurrencyScreen';
 // const Stack = createStackNavigator();
 
 // const App = () => {
@@ -13,6 +15,7 @@
 //       <Stack.Navigator initialRouteName="Home">
 //         <Stack.Screen name="Home" component={HomeScreen} />
 //         <Stack.Screen name="Login" component={Login} />
+//         <Stack.Screen name="EditPersonalInfo" component={EditPersonalInfo} />
 //       </Stack.Navigator>
 //     </NavigationContainer>
 //   );
