@@ -1,4 +1,5 @@
 
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity } from "react-native";
 import { Icon, Image } from "react-native-elements";
@@ -8,7 +9,14 @@ import StarRating from "react-native-star-rating";
 
 
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+
+
+  const navigation = useNavigation(); // Using useNavigation hook to get navigation object
+  const route = useRoute();
+
+  const {userName}=route.params
+
  // navigation for Agency Profile
   const handleAgencyPress = (agencyName) => {
     navigation.navigate("AgencyDetails", { agencyName });
@@ -22,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
 
         <View style={styles.header}>
           <View >
-           <Text style={styles.profilename}>Hi, Dilruksha !</Text>
+           <Text style={styles.profilename}>Hi,{userName} !</Text>
            <View style={styles.subheader}>
            <Image source={require("../assets/home/images/icon.png")} style={styles.locationIcon}/>
             <Text style={styles.location}>Sydney, Australia</Text>

@@ -7,33 +7,27 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-} from "react-native"; // Add import statement for TouchableOpacity
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { CheckBox } from "react-native-elements"; // Import CheckBox from react-native-elements
-import {
-  useFonts,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from "@expo-google-fonts/roboto";
-import {
-  JosefinSans_400Regular,
-  JosefinSans_700Bold,
-} from "@expo-google-fonts/josefin-sans";
-import {jwtDecode} from 'jwt-decode'
-import axios from "axios";
+import { CheckBox } from "react-native-elements";
+import { useFonts, Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import { JosefinSans_400Regular, JosefinSans_700Bold } from "@expo-google-fonts/josefin-sans";
 
-  const Login = ({navigation}) => {
+import axios from "axios";
+import jwt_decode from 'jwt-decode';
+import { useNavigation } from "@react-navigation/native";
+
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [successMessage,setSuccessMessage]=useState("");
-  const [errorMessage,setErrorMessage]=useState("");
-
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false); // Add state for Remember Me checkbox
-  const Decode=jwtDecode;
+  const [rememberMe, setRememberMe] = useState(false);
 
+  
+  const  navigation=useNavigation()
   
   const handleForgotPassword = () => {
     console.log("Forgot Password clicked");
@@ -44,20 +38,16 @@ import axios from "axios";
   };
 
   const handleRegisterNow = () => {
-   navigation.navigate('Register')
+    navigation.navigate('Register');
   };
 
-  //Validating email and handling password
   const emailHandler = (text) => {
-    // Regular expression to validate email format
-    // const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
-    // setIsValidEmail(isValid);
     setEmail(text);
   };
 
-const handlePassword=(text)=>{
-  setPassword(text)
-}
+  const handlePassword = (text) => {
+    setPassword(text);
+  };
 
   let [fontsLoaded] = useFonts({
     RobotoRegular: Roboto_400Regular,
@@ -67,161 +57,141 @@ const handlePassword=(text)=>{
   });
 
   if (!fontsLoaded) {
-    return null; // Loading indicator while fonts are loading
+    return null;
   }
 
-
-  const handleLogin=async()=>{
-
-    try{
-    const user=({
+  const handleLogin = async () => {
+    try {
+      const user = {
         email,
         password
-    });
-    const response = await axios.post("http://192.168.56.1:5005/loginuser",user);
-    if(response.status===200){
-     
-      // const token=response.data.token;
-      // console.log("token",token);
-      // const decode=Decode(token);
-      // console.log(decode);
-      // document.cookie = `jwt=${token}; path=/; max-age=${60 * 60 * 24}`;
-      setSuccessMessage("Loading...");
-        setTimeout(()=>{
-          setSuccessMessage("")
-            navigation.navigate('BottomTabNavigator');
-        },3000)
+      };
+      const response = await axios.post("http://192.168.56.1:5005/loginuser", user);
+      if (response.status === 200) {
+    
+       console.log(response.data);
+       const userName=response.data.data.userName
+        const token = response.data.token;
+        console.log(token)
+        // const decodedToken = Jwtdecode(token);
+        // console.log(decodedToJwtdecodeken);
+        // You cannot use document.cookie in React Native, so remove this line
+        setSuccessMessage("Loading...");
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigation.navigate('BottomTabNavigator',{userName });
+        }, 3000);
+      } else {
+        console.log("User not found");
+        setErrorMessage("Invalid email or password. Try again.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 3000);
+      }
+    } catch (error) {
+      console.log("Some error...!", error);
+      setErrorMessage("Invalid email or password. Please try again.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+  };
 
-    }else{
-        console.log("user not found")
-        setErrorMessage("Invalid email or password.Try to remember again")
-        setTimeout(()=>{
-     setErrorMessage("")
-        },3000)
-    }
-    }catch(error){
-     console.log("internal server error"+ error);
-     setErrorMessage("Invalid email or password.Please try again");
-     setTimeout(()=>{
-        setErrorMessage("")
-           },3000)
-    }
-}
   return (
     <View style={styles.container}>
       <ScrollView>
-     
-{
-  successMessage && <Text style={styles.success}>{successMessage}</Text>
-}
-
-{
-  errorMessage && <Text style={styles.error}>{errorMessage}</Text>
-}
-      <Text style={styles.welcomeText}>Welcome </Text>
-      <Text style={styles.welcomeText}>back!</Text>
-      <Text style={styles.title}>Sign In</Text>
-
-      <View
-        style={[
-          styles.inputContainer,
-          { borderColor: isValidEmail ? "green" : "#ccc" },
-        ]}
-      >
-        <TextInput
-          style={styles.input}
-          placeholder="Username or Email"
-          value={email}
-          onChangeText={emailHandler}
-          autoCapitalize="none"
-        />
-        {isValidEmail && (
-          <Feather
-            name="check-circle"
-            size={24}
-            color="green"
-            style={styles.icongmail}
+        {successMessage && <Text style={styles.success}>{successMessage}</Text>}
+        {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
+        <Text style={styles.welcomeText}>Welcome</Text>
+        <Text style={styles.welcomeText}>back!</Text>
+        <Text style={styles.title}>Sign In</Text>
+        <View style={[styles.inputContainer, { borderColor: isValidEmail ? "green" : "#ccc" }]}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username or Email"
+            value={email}
+            onChangeText={emailHandler}
+            autoCapitalize="none"
           />
-        )}
-      </View>
-
-      <View style={styles.passwordInputContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          value={password}
-          onChangeText={handlePassword}
-          secureTextEntry={!isPasswordVisible}
-        />
-        <TouchableOpacity
-          onPress={togglePasswordVisibility}
-          style={styles.eyeIcon}
-        >
-          <Feather
-            name={isPasswordVisible ? "eye-off" : "eye"}
-            size={24}
-            color="gray"
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.rowContainer}>
-        <View style={styles.checkboxContainer}>
-          <CheckBox
-            title="Remember me"
-            checked={rememberMe}
-            onPress={() => setRememberMe(!rememberMe)}
-            containerStyle={styles.checkbox}
-            // textStyle={styles.checkboxTitle}
-            titleProps={{
-              style: {
-                fontFamily: "RobotoRegular",
-                color: "#000000",
-                marginLeft: 5,
-                fontSize: 15,
-              },
-            }}
-          />
+          {isValidEmail && (
+            <Feather
+              name="check-circle"
+              size={24}
+              color="green"
+              style={styles.icongmail}
+            />
+          )}
         </View>
-
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
-
-      <View style={styles.registerContainer}>
-        <Text style={styles.noAccountText}>No account?</Text>
-        <TouchableOpacity onPress={handleRegisterNow}>
-          <Text style={styles.registerNowText}>Register now</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.registerContainer}>
-        <View style={styles.line} />
-        <Text style={styles.orText}>or continue with</Text>
-        <View style={styles.line} />
-      </View>
-
-      <View style={styles.socialButtonsContainer}>
-        <View style={styles.iconContainer}>
-          <Image
-            source={require("../assets/icons/fb.png")}
-            style={styles.icon}
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            value={password}
+            onChangeText={handlePassword}
+            secureTextEntry={!isPasswordVisible}
           />
-          <Image
-            source={require("../assets/icons/t.png")}
-            style={styles.icon}
-          />
-          <Image
-            source={require("../assets/icons/g.png")}
-            style={styles.icon}
-          />
+          <TouchableOpacity
+            onPress={togglePasswordVisibility}
+            style={styles.eyeIcon}
+          >
+            <Feather
+              name={isPasswordVisible ? "eye-off" : "eye"}
+              size={24}
+              color="gray"
+            />
+          </TouchableOpacity>
         </View>
-      </View>
+        <View style={styles.rowContainer}>
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              title="Remember me"
+              checked={rememberMe}
+              onPress={() => setRememberMe(!rememberMe)}
+              containerStyle={styles.checkbox}
+              titleProps={{
+                style: {
+                  fontFamily: "RobotoRegular",
+                  color: "#000000",
+                  marginLeft: 5,
+                  fontSize: 15,
+                },
+              }}
+            />
+          </View>
+          <TouchableOpacity onPress={handleForgotPassword}>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+        <View style={styles.registerContainer}>
+          <Text style={styles.noAccountText}>No account?</Text>
+          <TouchableOpacity onPress={handleRegisterNow}>
+            <Text style={styles.registerNowText}>Register now</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.registerContainer}>
+          <View style={styles.line} />
+          <Text style={styles.orText}>or continue with</Text>
+          <View style={styles.line} />
+        </View>
+        <View style={styles.socialButtonsContainer}>
+          <View style={styles.iconContainer}>
+            <Image
+              source={require("../assets/icons/fb.png")}
+              style={styles.icon}
+            />
+            <Image
+              source={require("../assets/icons/t.png")}
+              style={styles.icon}
+            />
+            <Image
+              source={require("../assets/icons/g.png")}
+              style={styles.icon}
+            />
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -232,7 +202,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
-    
   },
   welcomeText: {
     fontSize: 60,
@@ -260,15 +229,10 @@ const styles = StyleSheet.create({
     height: 40,
     fontFamily: "RobotoRegular",
   },
-  icon: {
-    marginLeft: 10,
-  },
-
   icongmail: {
     width: 24,
     height: 24,
   },
-
   passwordInputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -304,12 +268,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingHorizontal: 0,
   },
-  // checkboxTitle: {
-  //   fontSize: 16,
-  //   fontFamily: 'RobotoRegular', // Apply your font family here
-  //   color: '#C70000', // Customize color as needed
-  //   marginLeft: 10, // Adjust spacing between checkbox and title
-  // },
   forgotPassword: {
     fontSize: 16,
     color: "#2194FF",
@@ -375,15 +333,15 @@ const styles = StyleSheet.create({
     height: 80,
     marginHorizontal: 2,
   },
-  success:{
-    marginTop:20,
-    alignItems:'center',
-    color:'#2194FF'
+  success: {
+    marginTop: 20,
+    alignItems: 'center',
+    color: '#2194FF'
   },
-  error:{
-    marginTop:20,
-    alignItems:'center',
-    color:'#dc3545'
+  error: {
+    marginTop: 20,
+    alignItems: 'center',
+    color: '#dc3545'
   }
 });
 

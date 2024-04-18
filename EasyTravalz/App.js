@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import Start from './screens/Start';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AgencyDetails from './screens/AgencyDetails';
 import Inbox from './screens/Inbox';
 import Login from './screens/Login';
@@ -12,58 +12,67 @@ import User from './screens/User';
 import { Image } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import Register from './screens/Register';
+import EditPersonalInfo from './screens/EditPersonalInfo';
+import Edit from './screens/Edit';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const BottomTabNavigator = () => {
+const BottomTabNavigator = ({route}) => {
+ 
+  
+
+  const { userName } = route.params;
   return (
     <Tab.Navigator initialRouteName="HomeScreen"
     
    screenOptions={{
      tabBarItemStyle:{
-      marginTop:10,
+    
       justifyContent: 'center', 
+      marginBottom:-5
      },
 
     }}
     >
       <Tab.Screen
+        name="HomeScreen"
+        initialParams={{ userName: userName }}
         options={{
           headerShown: false,
-          tabBarLabel: '', // Hide the name on the bottom navigator
+          tabBarLabel: '',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-home" size={size} color={color} />
+            <Ionicons name="ios-home" size={size+8} color={color} />
           ),
         }}
-        name="HomeScreen"
-        component={HomeScreen}
-      />
+      >
+        {() => <HomeScreen userName={userName} />}
+      </Tab.Screen>
       <Tab.Screen
         options={{
           headerShown: false,
           tabBarLabel: '', // Hide the name on the bottom navigator
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-mail"size={size} color={color} />
+            <Ionicons name="ios-mail"size={size+10} color={color} />
           ),
         }}
         name="Inbox"
         component={Inbox}
       />
 
-      <Tab.Screen
-        options={{
+<Tab.Screen
+        name="Profile"
+        component={EditPersonalInfo}
+        initialParams={{ userName: userName }}
+        options={{  
           headerShown: false,
-          tabBarLabel: '', // Hide the name on the bottom navigator
+          tabBarLabel: '',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-log-in" size={size} color={color} />
+            <MaterialCommunityIcons name="account-circle" size={size + 15} color={color} />
           ),
         }}
-        name="Login"
-        component={Login}
       />
 
-     
     </Tab.Navigator>
   );
 };
@@ -89,6 +98,7 @@ const App = () => {
         ) : (
           <>
           <Stack.Screen name="Loading" component={Register} options={{ headerShown: false }} />
+        
           <Stack.Screen
             name="BottomTabNavigator"
             component={BottomTabNavigator}
@@ -127,6 +137,20 @@ const App = () => {
       })}
       />
        <Stack.Screen name="AgencyDetails" component={AgencyDetails} options={({ navigation }) => ({
+  headerShown: true,
+  headerTitle: '',
+  headerLeft: () => (
+    <Ionicons
+      name="ios-arrow-back"
+      size={24}
+      color="black"
+      onPress={() => navigation.goBack()}
+      style={{ marginLeft: 10 }}
+    />
+  ),
+})}
+ />
+       <Stack.Screen name="EditProfile" component={Edit} options={({ navigation }) => ({
   headerShown: true,
   headerTitle: '',
   headerLeft: () => (
