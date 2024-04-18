@@ -45,12 +45,16 @@ const userLogin=async(req,res)=>{
     try{
 
     const user=await Users.findOne({email});
+    const userData={
+      userName:user.userName,
+      email:user.email
+    }
     if(user){
     const auth=await bcrypt.compare(password,user.password);
     if(auth){
      const token=createToken(user);
 
-     res.status(200).json({message:"You logged in successfuly",token})
+     res.status(200).json({message:"You logged in successfuly",token,data:userData})
     }else{
         res.status(401).json({message:"your password is incorrect.Please try to remember"})
     }

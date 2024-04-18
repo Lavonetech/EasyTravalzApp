@@ -5,7 +5,7 @@ const cookieParser=require('cookie-parser');
 const dotenv=require('dotenv');
 const cors=require("cors");
 dotenv.config();
-app.use(cors());
+app.use(cors('*'));
 app.use(express.json())
 const path = require('path');
 
