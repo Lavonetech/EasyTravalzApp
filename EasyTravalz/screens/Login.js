@@ -69,17 +69,17 @@ const Login = () => {
       const response = await axios.post("http://192.168.56.1:5005/loginuser", user);
       if (response.status === 200) {
     
-       console.log(response.data);
-       const userName=response.data.data.userName
-        const token = response.data.token;
-        console.log(token)
+       const id=response.data.data.id
+       console.log("ID received in BottomTabNavigator:", id);
+
         // const decodedToken = Jwtdecode(token);
         // console.log(decodedToJwtdecodeken);
         // You cannot use document.cookie in React Native, so remove this line
         setSuccessMessage("Loading...");
         setTimeout(() => {
           setSuccessMessage("");
-          navigation.navigate('BottomTabNavigator',{userName });
+          navigation.navigate('BottomTabNavigator', { id: id });
+
         }, 3000);
       } else {
         console.log("User not found");

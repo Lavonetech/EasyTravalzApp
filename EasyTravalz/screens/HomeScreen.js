@@ -1,6 +1,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity } from "react-native";
 import { Icon, Image } from "react-native-elements";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
@@ -15,8 +16,47 @@ const HomeScreen = () => {
   const navigation = useNavigation(); // Using useNavigation hook to get navigation object
   const route = useRoute();
 
-  const {userName}=route.params
+  // const {userName}=route.params;
+  const {id}=route.params;
+  console.log("ID received in HomeScreen:", id);
 
+  const [user, setUser] = useState({
+    id: "",
+    userName: "",
+    email: "",
+    password: "",
+    phoneNumber: ""
+});
+
+const username=user.userName
+
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(`http://192.168.56.1:5005/getuserbyid/${id}`);
+      console.log(response.data)
+      if (response.status === 200) {
+        const userData = response.data.user;
+        setUser(() => ({
+          
+          id: userData.id,
+          userName:userData.userName,
+          email:userData.email,
+          phoneNumber:userData.phoneNumber,
+          password:userData.password
+        }));
+
+      } else {
+        console.log("Usernot found");
+      }
+    } catch (err) {
+      console.log("500 server error", err);
+      setErrorMessage("500 server error, please try again");
+    }
+  };
+
+  fetchUser();
+}, []);
  // navigation for Agency Profile
   const handleAgencyPress = (agencyName) => {
     navigation.navigate("AgencyDetails", { agencyName });
@@ -30,7 +70,7 @@ const HomeScreen = () => {
 
         <View style={styles.header}>
           <View >
-           <Text style={styles.profilename}>Hi,{userName} !</Text>
+           <Text style={styles.profilename}>Hi,{username} !</Text>
            <View style={styles.subheader}>
            <Image source={require("../assets/home/images/icon.png")} style={styles.locationIcon}/>
             <Text style={styles.location}>Sydney, Australia</Text>
@@ -38,7 +78,7 @@ const HomeScreen = () => {
            </View>
           </View>
           <View style={styles.headerIcons}>
-          <Image source={require("../assets/home/images/msg-icon.png")} style={styles.msgIcon}/>
+          <Image source={require("../assets/home/images/navigation.svg")} style={styles.msgIcon}/>
           </View>
         </View>
         <View style={styles.search}>

@@ -8,8 +8,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AgencyDetails from './screens/AgencyDetails';
 import Inbox from './screens/Inbox';
 import Login from './screens/Login';
-import User from './screens/User';
-import { Image } from 'react-native-elements';
+
 import { StyleSheet } from 'react-native';
 import Register from './screens/Register';
 import EditPersonalInfo from './screens/EditPersonalInfo';
@@ -18,11 +17,12 @@ import Edit from './screens/Edit';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const BottomTabNavigator = ({route}) => {
+const BottomTabNavigator = () => {
  
+  const route=useRoute();
   
 
-  const { userName } = route.params;
+  const  {id}=route.params
   return (
     <Tab.Navigator initialRouteName="HomeScreen"
     
@@ -37,7 +37,7 @@ const BottomTabNavigator = ({route}) => {
     >
       <Tab.Screen
         name="HomeScreen"
-        initialParams={{ userName: userName }}
+        initialParams={{ id: id }}
         options={{
           headerShown: false,
           tabBarLabel: '',
@@ -46,7 +46,7 @@ const BottomTabNavigator = ({route}) => {
           ),
         }}
       >
-        {() => <HomeScreen userName={userName} />}
+        {() => <HomeScreen id={id} />}
       </Tab.Screen>
       <Tab.Screen
         options={{
@@ -63,7 +63,7 @@ const BottomTabNavigator = ({route}) => {
 <Tab.Screen
         name="Profile"
         component={EditPersonalInfo}
-        initialParams={{ userName: userName }}
+        initialParams={{id: id }}
         options={{  
           headerShown: false,
           tabBarLabel: '',
@@ -150,7 +150,7 @@ const App = () => {
   ),
 })}
  />
-       <Stack.Screen name="EditProfile" component={Edit} options={({ navigation }) => ({
+       <Stack.Screen name="EditProfile" component={Edit}  options={({ navigation }) => ({
   headerShown: true,
   headerTitle: '',
   headerLeft: () => (

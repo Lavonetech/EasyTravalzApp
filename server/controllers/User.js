@@ -46,6 +46,7 @@ const userLogin=async(req,res)=>{
 
     const user=await Users.findOne({email});
     const userData={
+      id:user.id,
       userName:user.userName,
       email:user.email
     }

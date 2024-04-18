@@ -1,6 +1,6 @@
 
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import {
   useFonts,
@@ -8,11 +8,51 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 import { useNavigation,useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const EditPersonalInfo = () => {
   const navigation = useNavigation(); // Access navigation object
   const route = useRoute();
-  const {userName}=route.params;
+  // const {userName}=route.params;
+  const {id}=route.params;
+  const [user, setUser] = useState({
+    id: "",
+    userName: "",
+    email: "",
+    password: "",
+    phoneNumber: ""
+});
+
+const username=user.userName
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://192.168.56.1:5005/getuserbyid/${id}`);
+        console.log(response.data)
+        if (response.status === 200) {
+          const userData = response.data.user;
+          setUser(() => ({
+            
+            id: userData.id,
+            userName:userData.userName,
+            email:userData.email,
+            phoneNumber:userData.phoneNumber,
+            password:userData.password
+          }));
+  
+        } else {
+          console.log("Usernot found");
+        }
+      } catch (err) {
+        console.log("500 server error", err);
+        setErrorMessage("500 server error, please try again");
+      }
+    };
+  
+    fetchUser();
+  }, []);
 
   // Load the Roboto fonts
   const [fontsLoaded] = useFonts({
@@ -20,10 +60,8 @@ const EditPersonalInfo = () => {
     Roboto_700Bold,
   });
 
-  // useEffect hook to handle side effects (currently empty)
-  useEffect(() => {
-    
-  }, []); 
+
+ 
 
   // Check if fonts are loaded before rendering
   if (!fontsLoaded) {
@@ -39,7 +77,7 @@ const EditPersonalInfo = () => {
 
   const handlePersonalInfoPress = () => {
     console.log("Personal Information Pressed");
-    navigation.navigate("EditProfile");
+     navigation.navigate('EditProfile', { id: id });
   };
 
   const handlePaymentHistoryPress = () => {
@@ -81,7 +119,7 @@ const EditPersonalInfo = () => {
           style={styles.profileImage}
         />
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{userName}</Text>
+          <Text style={styles.userName}>{username}</Text>
           <View style={styles.currencyRow}>
             <Text style={styles.currencyText}>$ - USD</Text>
             <TouchableOpacity
@@ -323,6 +361,17 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+
+  success: {
+    marginTop: 20,
+    alignItems: 'center',
+    color: '#2194FF'
+  },
+  error: {
+    marginTop: 20,
+    alignItems: 'center',
+    color: '#dc3545'
+  }
 });
 
 export default EditPersonalInfo;
