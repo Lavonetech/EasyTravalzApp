@@ -342,10 +342,9 @@ const EditPersonalInfo = () => {
     Roboto_700Bold,
   });
 
-  // useEffect hook to handle side effects (currently empty)
   useEffect(() => {
     // Your side-effect logic here
-  }, []); // Empty dependency array to run effect only once on mount
+  }, []); 
 
   // Check if fonts are loaded before rendering
   if (!fontsLoaded) {
@@ -370,7 +369,7 @@ const EditPersonalInfo = () => {
 
   const handlePaymentMethodPress = () => {
     console.log("Payment Method Pressed");
-    navigation.navigate("Edit");
+    navigation.navigate("PaymentMethod");
   };
 
   const handlePromocodesPress = () => {

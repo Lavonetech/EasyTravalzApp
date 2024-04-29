@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View,  Image, StyleSheet, ActivityIndicator } from 'react-native';
 
 const Start = () => {
   return (

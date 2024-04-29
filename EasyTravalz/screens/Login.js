@@ -6,9 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-} from "react-native"; // Add import statement for TouchableOpacity
+} from "react-native"; 
 import { Feather } from "@expo/vector-icons";
-import { CheckBox } from "react-native-elements"; // Import CheckBox from react-native-elements
+import { CheckBox } from "react-native-elements"; 
 import {
   useFonts,
   Roboto_400Regular,

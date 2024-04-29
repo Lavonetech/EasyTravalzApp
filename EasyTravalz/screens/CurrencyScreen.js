@@ -59,16 +59,11 @@
 //   },
 // });
 
-// export default CurrencyScreen;
 
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+
+
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome from expo vector icons
 
 const CurrencyScreen = () => {
@@ -95,24 +90,12 @@ const CurrencyScreen = () => {
     { name: "Danish Krone", symbol: "kr" },
   ];
 
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
-
-
-  useEffect(() => {
-    // Set the default currency (US Dollar) when the component mounts
-    const defaultCurrency = currencies.find((currency) => currency.name === 'US Dollar');
-    if (defaultCurrency) {
-      setSelectedCurrency(defaultCurrency);
-    }
-  }, []); // Empty dependency array ensures this effect runs only once on mount
-
+  const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]); // Set default currency (US Dollar)
 
   const handleCurrencyPress = (currency) => {
     console.log("Selected Currency:", currency.name, currency.symbol);
     setSelectedCurrency(currency);
   };
-
-
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -122,38 +105,25 @@ const CurrencyScreen = () => {
       {selectedCurrency && (
         <View style={styles.selectedCurrencyContainer}>
           <Text style={styles.selectedCurrencyText}>
-            Selected Currency: {selectedCurrency.name} -{" "}
-            {selectedCurrency.symbol}
+            Selected Currency: {selectedCurrency.name} - {selectedCurrency.symbol}
           </Text>
         </View>
       )}
       <View style={styles.line} />
+
+      {/* Render currency list */}
       {currencies.map((currency, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.currencyContainer}
-        //   onPress={() => setSelectedCurrency(currency)}
-        onPress={() => handleCurrencyPress(currency)}
-          
-        >
+        <TouchableOpacity key={index} style={styles.currencyContainer} onPress={() => handleCurrencyPress(currency)}>
           <Text style={styles.currencyName}>
             {currency.name} - {currency.symbol}
             <Text>                     </Text>
             <View style={styles.currencyInfo}>
-            {selectedCurrency && selectedCurrency.name === currency.name && (
-              <FontAwesome
-                name="check"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-            )}
-            
-          </View>
+              {/* Render check icon if this currency is selected */}
+              {selectedCurrency && selectedCurrency.name === currency.name && (
+                <FontAwesome name="check" size={20} color="black" style={styles.icon} />
+              )}
+            </View>
           </Text>
-          
-          
-          
           <View style={styles.line} />
         </TouchableOpacity>
       ))}
@@ -169,7 +139,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   currencyContainer: {
-    // flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "",
   },
@@ -181,10 +150,6 @@ const styles = StyleSheet.create({
   currencyInfo: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  currencySymbol: {
-    fontSize: 18,
-    marginLeft: 1,
   },
   icon: {
     marginRight: 5,
