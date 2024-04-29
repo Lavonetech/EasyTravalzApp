@@ -198,7 +198,7 @@ useEffect(() => {
           style={styles.input}
           placeholder="Password"
          
-          onChangeText={(value)=>handleChange("password",value)}
+          
         />
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Save Changes</Text>

@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   useFonts,
   Roboto_400Regular,
@@ -106,8 +108,17 @@ const username=user.userName
     console.log("FAQ Pressed");
   };
 
-  const handleSignOutPress = () => {
-    console.log("Sign out Pressed");
+  // Logout function
+  const handleSignOutPress = async () => {
+    try {
+      // Clear user data from AsyncStorage or any other storage mechanism
+      await AsyncStorage.removeItem('userData');
+
+      // Navigate to the login screen or any other initial screen
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log("Error logging out:", error);
+    }
   };
 
   return (
@@ -257,23 +268,9 @@ const username=user.userName
       {/* Divider Line */}
       <View style={styles.divider} />
 
-      {/* Section: FAQ */}
-      <TouchableOpacity style={styles.section} onPress={handleFAQPress}>
-        <Image
-          source={require("../assets/editpersonalinfo/FAQ.png")}
-          style={styles.sectionIcon}
-        />
-        <Text style={styles.sectionTitle}>FAQ</Text>
-        <View style={styles.arrowContainer}>
-          <Image
-            source={require("../assets/editpersonalinfo/arrow.png")}
-            style={styles.arrowIcon}
-          />
-        </View>
-      </TouchableOpacity>
+   
 
-      {/* Divider Line */}
-      <View style={styles.divider} />
+      
 
       {/* Section: Sign out */}
       <TouchableOpacity style={styles.section} onPress={handleSignOutPress}>
@@ -282,6 +279,12 @@ const username=user.userName
           style={styles.sectionIcon}
         />
         <Text style={styles.sectionTitle}>Sign out</Text>
+        <View style={styles.arrowContainer}>
+          <Image
+            source={require("../assets/editpersonalinfo/arrow.png")}
+            style={styles.arrowIcon}
+          />
+        </View>
       </TouchableOpacity>
 
       {/* Divider Line */}

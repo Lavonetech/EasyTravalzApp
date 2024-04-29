@@ -1,3 +1,5 @@
+
+import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -136,9 +138,10 @@ const App = () => {
         ),
       })}
       />
-       <Stack.Screen name="AgencyDetails" component={AgencyDetails} options={({ navigation }) => ({
+       <Stack.Screen name="AgencyDetails" component={AgencyDetails}  options={({ navigation }) => ({
   headerShown: true,
   headerTitle: '',
+  
   headerLeft: () => (
     <Ionicons
       name="ios-arrow-back"

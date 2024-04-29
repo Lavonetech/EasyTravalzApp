@@ -12,7 +12,7 @@ import StarRating from "react-native-star-rating";
 
 const HomeScreen = () => {
 
-
+  const [loading,setLoading]=useState(false)
   const navigation = useNavigation(); // Using useNavigation hook to get navigation object
   const route = useRoute();
 
@@ -57,15 +57,50 @@ useEffect(() => {
 
   fetchUser();
 }, []);
- // navigation for Agency Profile
-  const handleAgencyPress = (agencyName) => {
-    navigation.navigate("AgencyDetails", { agencyName });
+ 
+  // Get Traval Agency Data to frontend
+
+const [agency,setAgency]=useState([]);
+
+useEffect(() => {
+  const getAgencies = async () => {
+    try {
+      const response = await axios.get("http://192.168.56.1:5005/getagencies");
+      if (response.data) {
+        console.log("success");
+
+        const formattedData = response.data;
+        const agencies = formattedData.formattedAgency.map((agency) => ({
+          id: agency.id,
+          image:agency.image,
+          agencyName: agency.agencyName,
+          country:agency.country,
+          city:agency.city,
+          website:agency.website,
+          description: agency.description,
+        }));
+        setAgency(agencies);
+        
+      }
+    } catch (err) {
+      console.log("Agencys not found", err);
+    }
   };
+  getAgencies();
+}, []);
+
+// navigation for Agency Profile
+const handleAgencyPress = (agencyId) => {
+  navigation.navigate("AgencyDetails", { id: agencyId }); // Pass the agencyId as a parameter
+  console.log("Agency details Id", agencyId);
+};
 
   return (
+  
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
+          
         <View style={styles.main}>
 
         <View style={styles.header}>
@@ -78,7 +113,8 @@ useEffect(() => {
            </View>
           </View>
           <View style={styles.headerIcons}>
-          <Image source={require("../assets/home/images/navigation.svg")} style={styles.msgIcon}/>
+          <Image source={require("../assets/notifcation.png")} style={styles.notiIcon}/>
+          <Image source={require("../assets/alerm.png")} style={styles.msgIcon}/>
           </View>
         </View>
         <View style={styles.search}>
@@ -100,13 +136,18 @@ useEffect(() => {
             }}
           />
         </View>
-        <TouchableOpacity style={styles.agency} onPress={() => handleAgencyPress("360 Tours Lanka")}>
-          <View>
-            <Image source={require("../assets/home/images/agency/a-1.png")} style={styles.agencyImg} />
+        {
+          agency.map((item)=>(
+        <TouchableOpacity style={styles.agency} onPress={()=> handleAgencyPress(item.id)}>
+         
+            <View key={item.id}>
+            <Image source={require("../assets/home/images/mg-icon.png")}  style={styles.mgIcon} />
+            <Image source={{ uri: `http://192.168.56.1:5005/${item.image}` }} style={styles.agencyImg} />
             <View style={styles.overlay}></View>
             <View style={styles.agencyContent}>
-              <Text style={styles.agencyTitle}>360 Tours Lanka</Text>
-              <Text style={styles.locationTitle}>Colombo, Sri Lanka</Text>
+           
+              <Text style={styles.agencyTitle}>{item.agencyName}</Text>
+              <Text style={styles.locationTitle}>{item.city} {" "} {item.country}</Text>
               <View style={styles.stars}>
                 <StarRating
                   disabled={true}
@@ -122,62 +163,11 @@ useEffect(() => {
               </View>
             </View>
           </View>
+          
         </TouchableOpacity>
-        <View style={styles.agency}>
-            <View>
-              <Image source={require("../assets/home/images/agency/a-2.png")} style={styles.agencyImg}/>
-              <View style={styles.overlay}></View>
-              <View style={styles.agencyContent}>
-                <Text style={styles.agencyTitle}>A & A Travels (Pvt) Ltd</Text>
-                <Text style={styles.locationTitle}>Bentota, Sri Lanka</Text>
-                <View style={styles.stars}>
-                <StarRating
-                   disabled={true}
-                   maxStars={5}
-                   rating={5}
-                   starSize={20}
-                 
-                   fullStarColor="#FFD700"
-                   emptyStarColor="#CCCCCC"
-                   starMarginHorizontal={10} 
-                   starStyle={{marginRight:5,marginTop:5}}
-                   />
-                   <Text style={styles.starText}>
-                    (1.8K)
-                   </Text>
-                </View>
-                
-              </View>
-            </View>
-        </View>
+        ))
+      }
 
-        <View style={styles.agency}>
-            <View>
-              <Image source={require("../assets/home/images/agency/a-3.png")} style={styles.agencyImg}/>
-              <View style={styles.overlay}></View>
-              <View style={styles.agencyContent}>
-                <Text style={styles.agencyTitle}>SSD Travellers</Text>
-                <Text style={styles.locationTitle}>Kandy, Sri Lanka</Text>
-                <View style={styles.stars}>
-                <StarRating
-                   disabled={true}
-                   maxStars={5}
-                   rating={5}
-                   starSize={20}
-                 
-                   fullStarColor="#FFD700"
-                   emptyStarColor="#CCCCCC"
-                   starMarginHorizontal={10} 
-                   starStyle={{marginRight:5,marginTop:5}}
-                   />
-                   <Text style={styles.starText}>
-                    (1.8K)
-                   </Text>
-                </View>
-                
-              </View>
-            </View>
-        </View>
         </View>
         </ScrollView>
       
@@ -206,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 15,
     marginBottom: 5,
-    marginTop: 20,
+    marginTop: 5,
     backgroundColor: "#fff",
     sshadowColor: "#000",
     shadowOffset: {
@@ -246,19 +236,30 @@ const styles = StyleSheet.create({
   },
   headerIcons:{
   display:'flex',
+  flexDirection:"row",
+  gap:5,
   alignItems:'flex-end',
   justifyContent:'flex-end',
   marginLeft:100,
   },
   msgIcon:{
+    position:'relative',
+  width:30,
+  height:30,
+  
+  },
+  notiIcon:{
+    position:'relative',
+    top:15,
   width:40,
   height:40,
-  display:'flex',
-  justifyContent:'flex-end'
   },
 
   agency:{
     position:'relative',
+    displa:'flex',
+    flexDirection:'column',
+    gap:10,
     top:10,
     marginBottom:15
     
@@ -305,6 +306,13 @@ const styles = StyleSheet.create({
     color:'#fff',
     zIndex:3,
     fontSize:18
+  },
+
+  mgIcon:{
+    
+    transform: [{ scale: 2 }],
+  
+  
   }
 });
 

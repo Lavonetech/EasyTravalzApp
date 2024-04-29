@@ -1,96 +1,137 @@
-import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View, Image, Text } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 
-function AgencyDetails({navigation}) {
+function AgencyDetails() {
 
+  
+  const navigation = useNavigation(); // Using useNavigation hook to get navigation object
+  const route = useRoute();
+
+  
+  const {id}=route.params;
+
+  const [agency,setAgency]=useState({
+    id: "",
+    image:"",
+    agencyName: "",
+    country:"",
+    city:"",
+    website:"",
+    licenceNo:"",
+    RegistrationNo:"",
+    description: ""
+  })
     const handlePress=()=>{
         navigation.navigate("HomeScreen")
     }
-  return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <ScrollView>
-        <View style={styles.main}>
-          {/* <View>
-            <Image
-              source={require("../assets/agencyDetails/arrow-left.png")}
-              style={styles.backBtn}
-            />
-          </View> */}
-          <View style={styles.agencyProfile}>
-            <Image
-              source={require("../assets/home/images/agency/a-1.png")}
-              style={styles.agencyProfileImg}
-            />
-            <View>
-              <Text style={styles.agencyProfileTitle}>360 Tours Lanka</Text>
-              <Text style={styles.joinDate}>Joined in March 2016</Text>
-            </View>
-          </View>
-          <View style={styles.verified}>
-            <Image
-              source={require("../assets/agencyDetails/shield.png")}
-              style={styles.sheild}
-            />
-            <Text style={styles.verifiedText}>Verified</Text>
-            <Image
-              source={require("../assets/agencyDetails/Star-1.png")}
-              style={styles.star}
-            />
-            <Text style={styles.verifiedText}>167 reviews</Text>
-            <View style={styles.groupImage}>
-              <Image
-                source={require("../assets/agencyDetails/image-group.png")}
-                style={styles.agencyProfileImgGroup}
-              />
-            </View>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.paragraph}>
-              basically i'm an ambitious risk taker kiddo from Sri Lanka been
-              living abrade for the lase 8 year trying to find his place in life
-              i've taken plenty of experience on my way to achieve success by
-              working in multiple industries
-            </Text>
-            <View style={styles.locate}>
-            <Image source={require("../assets/home/images/icon.png")} style={styles.locationIcon}/>
-            <Text style={styles.location}>Sydney, Australia</Text>
-            <View  >
-           <TouchableOpacity style={styles.button} onPress={handlePress}>
-           <Text style={styles.btnText}>Pay Now</Text>
-           </TouchableOpacity>
-              
-            </View>
-            </View>
-            <View>
-                <View style={{marginTop:3}}>
-                <Text style={{fontSize:16,fontWeight:700,marginBottom:10}}>Address</Text>
+
+    useEffect(() => {
+      const fetchProduct = async () => {
+        try {
+          const response = await axios.get(`http://192.168.56.1:5005/getagency/${id}`);
+          console.log(response.data);
+          if (response.status === 200) {
+            const agencyData = response.data.formattedAgency;
+            setAgency(() => ({
+              id: agencyData.id,
+              image: agencyData.image,
+              agencyName: agencyData.agencyName,
+              country: agencyData.country,
+              city: agencyData.city,
+              website: agencyData.website,
+              licenceNo: agencyData.licenceNo,
+              RegistrationNo: agencyData.RegistrationNo,
+              description: agencyData.description,
+              // Update with more fields as needed
+            }));
+          } else {
+            console.log("Travel agency not found");
+          }
+        } catch (error) {
+          console.log("Error fetching agency details:", error);
+          // Handle error gracefully, e.g., set error message state
+        }
+      };
+    
+      fetchProduct();
+    }, [id]);
+    
+
+    return (
+      <View style={styles.container}>
+        <SafeAreaView>
+          <ScrollView>
+            <View style={styles.main}>
+              <View style={styles.agencyProfile}>
+                <Image
+                source={{ uri: `http://192.168.56.1:5005/${agency.image}` }}  // Use uri for network images
+                  style={styles.agencyProfileImg}
+                />
+                <View>
+                  <Text style={styles.agencyProfileTitle}>{agency.agencyName}</Text>
+                  <Text style={styles.joinDate}>Joined in March 2016</Text>
+                </View>
+              </View>
+              <View style={styles.verified}>
+                <Image
+                  source={require("../assets/agencyDetails/shield.png")}
+                  style={styles.sheild}
+                />
+                <Text style={styles.verifiedText}>Verified</Text>
+                <Image
+                  source={require("../assets/agencyDetails/Star-1.png")}
+                  style={styles.star}
+                />
+                <Text style={styles.verifiedText}>167 reviews</Text>
+                <View style={styles.groupImage}>
+                  <Image
+                    source={require("../assets/agencyDetails/image-group.png")}
+                    style={styles.agencyProfileImgGroup}
+                  />
+                </View>
+              </View>
+              <View style={styles.details}>
+                <Text style={styles.paragraph}>{agency.description}</Text>
+                <View style={styles.locate}>
+                  <Image source={require("../assets/home/images/icon.png")} style={styles.locationIcon}/>
+                  <Text style={styles.location}>{agency.city}, {agency.country}</Text>
+                  <View>
+                    <TouchableOpacity style={styles.button} onPress={handlePress}>
+                      <Text style={styles.btnText}>Pay Now</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View>
+                  <View style={{marginTop:3}}>
+                    <Text style={{fontSize:16,fontWeight:700,marginBottom:10}}>Address</Text>
                     <Text style={{color:'#818C9B'}}>38/A Piliyandala</Text>
-                </View>
-                <View style={{marginTop:3}}>
+                  </View>
+                  <View style={{marginTop:3}}>
                     <Text style={{fontSize:16,fontWeight:700,marginBottom:10}}>Web</Text>
-                    <Text style={{color:'#818C9B'}}>www.360tourslanka.com</Text>
-                </View>
-                <View style={{marginTop:3}}>
+                    <Text style={{color:'#818C9B'}}>{agency.website}</Text>
+                  </View>
+                  <View style={{marginTop:3}}>
                     <Text style={{fontSize:16,fontWeight:700,marginBottom:10}}>Registration No</Text>
-                    <Text style={{color:'#818C9B'}}>SLTDA/SQA/TA/01942</Text>
-                </View>
-                <View style={{marginTop:3}}>
+                    <Text style={{color:'#818C9B'}}>{agency.RegistrationNo}</Text>
+                  </View>
+                  <View style={{marginTop:3}}>
                     <Text style={{fontSize:16,fontWeight:700,marginBottom:10}}>Licence No</Text>
-                    <Text style={{color:'#818C9B'}}>TA/2022/0090</Text>
+                    <Text style={{color:'#818C9B'}}>{agency.licenceNo}</Text>
+                  </View>
                 </View>
+              </View>
+              <TouchableOpacity style={styles.fullWidthBtn}>
+                <Text style={styles.btnText}>Contact {agency.agencyName}</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-          <TouchableOpacity style={styles.fullWidthBtn}>
-          <Text style={styles.btnText}>Contact 360 Tours Lanka</Text>
-          </TouchableOpacity>
-        </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-  );
+          </ScrollView>
+        </SafeAreaView>
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({

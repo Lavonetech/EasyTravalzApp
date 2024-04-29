@@ -14,7 +14,6 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/
 import { JosefinSans_400Regular, JosefinSans_700Bold } from "@expo-google-fonts/josefin-sans";
 
 import axios from "axios";
-import jwt_decode from 'jwt-decode';
 import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
@@ -60,6 +59,8 @@ const Login = () => {
     return null;
   }
 
+  // Login function
+  
   const handleLogin = async () => {
     try {
       const user = {
@@ -74,7 +75,7 @@ const Login = () => {
 
         // const decodedToken = Jwtdecode(token);
         // console.log(decodedToJwtdecodeken);
-        // You cannot use document.cookie in React Native, so remove this line
+        
         setSuccessMessage("Loading...");
         setTimeout(() => {
           setSuccessMessage("");
