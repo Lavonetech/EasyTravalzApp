@@ -56,8 +56,9 @@ const imageUpload = async (req, res) => {
 };
 
 //create new TravalAgency
+
 const createTravalAgency = async (req, res) => {
-   const images=req.file.path;
+   const images=req.file.path
   const {
     agencyName,
     description,
@@ -97,4 +98,60 @@ const createTravalAgency = async (req, res) => {
   }
 };
 
-module.exports={upload,imageUpload,createTravalAgency}
+// get traval agecy Infomation
+
+const getTravalAgency = async (req,res) => {
+
+  try {
+    const findAgencies= await AgencyDetails.find();
+    if (findAgencies.length > 0) {
+      const formattedAgency = findAgencies.map(agency=> ({
+        id:agency._id,
+        agencyName:agency.agencyName,
+        description:agency.description,
+        country:agency.country,
+       city:agency.city,
+       address:agency.address,
+       website:agency.website,
+       RegistrationNo:agency.RegistrationNo,
+       licenceNo:agency.licenceNo,
+        image:agency.image
+        
+      }));
+      res.status(200).json({ message: "Traval Agency found", formattedAgency});
+    } else {
+      res.status(404).json({ message: "Traval Agency found" });
+    }
+  }catch(error){
+    res.status(500).json({message:error.message})
+  }
+};
+
+const getTravalAgencyById = async (req, res) => {
+  try {
+    const itemId = req.params.id;
+    const findAgency= await AgencyDetails.findById(itemId);
+
+    if (findAgency) {
+      const formattedAgency = {
+      
+        agencyName:findAgency.agencyName,
+        description:findAgency.description,
+        country:findAgency.country,
+       city:findAgency.city,
+       address:findAgency.address,
+       website:findAgency.website,
+       RegistrationNo:findAgency.RegistrationNo,
+       licenceNo:findAgency.licenceNo,
+        image:findAgency.image
+      };
+
+      res.status(200).json({ message: "Traval Agency found", formattedAgency });
+    } else {
+      res.status(404).json({ message: "Traval Agency  not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports={upload,imageUpload,createTravalAgency, getTravalAgency, getTravalAgencyById}

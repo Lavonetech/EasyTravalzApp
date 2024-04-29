@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Import Feather from expo vector icons
 import axios from 'axios';
+import {
+  useFonts,
+  Roboto_400Regular,
+  Roboto_700Bold,
+} from "@expo-google-fonts/roboto";
+import {
+  JosefinSans_400Regular,
+  JosefinSans_700Bold,
+} from "@expo-google-fonts/josefin-sans";
 
 const Register = ({navigation}) => {
 
@@ -15,6 +24,7 @@ const Register = ({navigation}) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  
   const userNameHandler = (text) => {
     setUserName(text);
   }
@@ -86,9 +96,21 @@ const Register = ({navigation}) => {
   const handleLogin = () => {
     navigation.navigate('Login');
   }
+  let [fontsLoaded] = useFonts({
+    RobotoRegular: Roboto_400Regular,
+    RobotoMedium: Roboto_700Bold,
+    JosefinSans_400Regular,
+    JosefinSans_700Bold,
+  });
 
+  if (!fontsLoaded) {
+    return null; // Loading indicator while fonts are loading
+  }
+
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
+       <ScrollView>
       <View style={styles.container}>
       {
   successMessage && <Text style={styles.success}>{successMessage}</Text>
@@ -98,6 +120,7 @@ const Register = ({navigation}) => {
   errorMessage && <Text style={styles.error}>{errorMessage}</Text>
 }
         <SafeAreaView style={styles.headerContainer}>
+         
           <Text style={styles.header}>Sign up!</Text>
         </SafeAreaView>
         <View style={styles.formContainer}>
@@ -150,6 +173,7 @@ const Register = ({navigation}) => {
           <Image  source={require("../assets/icons/g.png")} style={styles.socialIcon} />
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -161,77 +185,86 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  
+ 
+
   header: {
     fontSize: 50,
+    fontFamily: "JosefinSans_700Bold",
     marginBottom: 20,
     marginTop: 20,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
+
   formContainer: {
-    width: '100%',
+    width: "100%",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+    fontFamily: "RobotoRegular",
   },
   passwordContainer: {
-    position: 'relative',
+    position: "relative",
     marginBottom: 10,
   },
   passwordInput: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 10,
+    fontFamily: "RobotoRegular",
   },
   eyeIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
   },
   signUpButton: {
-    backgroundColor: '#2194FF',
+    backgroundColor: "#2194FF",
     borderRadius: 5,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 10,
   },
   signUpButtonText: {
-    color: '#fff',
+    color: "#fff",
+    fontFamily: "RobotoMedium",
+    fontSize: 16,
   },
   signInText: {
     marginTop: 20,
-    alignSelf: 'flex-start',
-    color: 'grey'
+    alignSelf: "flex-start",
+    color: "grey",
+    fontFamily: "RobotoRegular",
+    fontSize: 17,
   },
   signInLink: {
-    color: 'green',
+    color: "#28C59F",
   },
   socialContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 50,
-    alignItems: 'center',
-    alignSelf: 'flex-start'
+    alignItems: "center",
+    alignSelf: "flex-start",
   },
   orText: {
     marginRight: 10,
     fontSize: 16,
+    color: "grey",
+    fontFamily: "RobotoRegular",
   },
   socialIcon: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
     marginRight: 10,
-    borderColor: '#ccc',
-    borderRadius: 5,
   },
   success:{
     marginTop:20,
