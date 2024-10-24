@@ -15,6 +15,9 @@ import { StyleSheet } from 'react-native';
 import Register from './screens/Register';
 import EditPersonalInfo from './screens/EditPersonalInfo';
 import Edit from './screens/Edit';
+import PaymentMethod from './screens/PaymentMethod';
+import CurrencyScreen from './screens/CurrencyScreen';
+import Main from './screens/Main';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,8 +102,9 @@ const App = () => {
 
         ) : (
           <>
-          <Stack.Screen name="Loading" component={Register} options={{ headerShown: false }} />
-        
+
+          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+         
           <Stack.Screen
             name="BottomTabNavigator"
             component={BottomTabNavigator}
@@ -154,6 +158,34 @@ const App = () => {
 })}
  />
        <Stack.Screen name="EditProfile" component={Edit}  options={({ navigation }) => ({
+  headerShown: true,
+  headerTitle: '',
+  headerLeft: () => (
+    <Ionicons
+      name="ios-arrow-back"
+      size={24}
+      color="black"
+      onPress={() => navigation.goBack()}
+      style={{ marginLeft: 10 }}
+    />
+  ),
+})}
+ />
+       <Stack.Screen name="PaymentMethod" component={PaymentMethod}  options={({ navigation }) => ({
+  headerShown: true,
+  headerTitle: '',
+  headerLeft: () => (
+    <Ionicons
+      name="ios-arrow-back"
+      size={24}
+      color="black"
+      onPress={() => navigation.goBack()}
+      style={{ marginLeft: 10 }}
+    />
+  ),
+})}
+ />
+       <Stack.Screen name="Currency" component={CurrencyScreen}  options={({ navigation }) => ({
   headerShown: true,
   headerTitle: '',
   headerLeft: () => (

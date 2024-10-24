@@ -73,7 +73,7 @@ const username=user.userName
 
   const handleChangeCurrencyPress = () => {
     console.log("Change currency Pressed");
-    navigation.navigate("CurrencyScreen");
+    navigation.navigate("Currency");
   };
 
 
@@ -88,7 +88,7 @@ const username=user.userName
 
   const handlePaymentMethodPress = () => {
     console.log("Payment Method Pressed");
-    navigation.navigate("Edit");
+    navigation.navigate("PaymentMethod");
   };
 
   const handlePromocodesPress = () => {
