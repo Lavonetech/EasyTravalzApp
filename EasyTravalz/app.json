@@ -4,10 +4,10 @@
     "slug": "EasyTravalz",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,16 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/notifcation.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mexporeact.EasyTravalz"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    
+    "extra": {
+      "eas": {
+        "projectId": "38123b48-f467-4e5f-b61b-6686e27a53c6"
+      }
     }
   }
 }

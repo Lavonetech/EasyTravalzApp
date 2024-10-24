@@ -92,6 +92,7 @@ const getUserById = async (req, res) => {
           id: findUser.id,
           userName:findUser.userName,
           email: findUser.email,
+  
           password: findUser.password,
           phoneNumber:findUser.phoneNumber
         };
